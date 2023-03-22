@@ -9,5 +9,7 @@ import java.util.Optional;
 
 public interface CinemaRepository extends JpaRepository<Cinema, String> {
 
-    Optional<Cinema> findByDistanceFromCityCenter(Double distance);
+    //cerco subito per citta' e distanza
+    Optional<Cinema> findByCityNameAndDistanceFromCityCenterIsLessThanEqual(String cityName, Double distance);
+    Optional<Cinema> findByCityName(String cityName);
 }

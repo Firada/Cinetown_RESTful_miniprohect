@@ -5,15 +5,23 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class FilmDTO {
+import java.io.Serializable;
 
+@Data
+@AllArgsConstructor
+public class FilmDTO implements Serializable {
+
+    private static final long serialVersionUID = -6504237329788313894L;
     private String name;
     private String producer;
     private String description;
 
-    @JsonProperty("film_url")
-    private String filmUrl;
+    public FilmDTO() {
+    }
+
+
+
+
+    /*  @JsonProperty("film_url")
+    private String filmUrl;*/
 }

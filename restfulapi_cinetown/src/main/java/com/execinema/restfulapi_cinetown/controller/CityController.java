@@ -31,9 +31,9 @@ public class CityController {
     }
 
     //POST
-    @PostMapping("/city/{cityName}/add/{cinema}")
+    @PostMapping("/city/{cityName}/add/cinema")
     @ResponseStatus(HttpStatus.CREATED)
-    public CinemaDTO createNewCinema(@PathVariable String cityName, @RequestBody Cinema cinema){
-        return cityService.createNewCinemaInCity(cityName, cinema);
+    public CinemaDTO createNewCinema(@PathVariable String cityName, @RequestBody CinemaDTO cinemaDTO){
+        return cityService.createNewCinemaInCity(cityName, cinemaDTO);
     }
 }

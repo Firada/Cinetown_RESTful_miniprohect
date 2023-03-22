@@ -30,12 +30,12 @@ public class CinemaController {
         return cinemaService.getCinemaListByCityNameFilmNameAndProducer(cityName, film, producer);
     }
 
-    @GetMapping("/cinema/all/city/{cityName}/film/{filmName}/producer/{producer}?distance={distance}")
+    @GetMapping("/cinema/all/city/{cityName}/film/{filmName}/producer/{producer}")
     @ResponseStatus(HttpStatus.OK)
     public ListCinemaDTO getCinemaListByCityNameFilmNameProducerAndDistance(@PathVariable String cityName,
                                                                             @PathVariable String filmName,
                                                                             @PathVariable String producer,
-                                                                            @RequestParam(name = "distance") @PathVariable Double distance){
+                                                                            @RequestParam(required = false) Double distance){
         return cinemaService.getCinemaListByCityNameFilmNameProducerAndDistance(cityName, filmName, producer, distance );
     }
 

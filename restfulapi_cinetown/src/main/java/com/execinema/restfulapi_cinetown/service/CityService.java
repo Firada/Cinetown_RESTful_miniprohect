@@ -16,5 +16,5 @@ public interface CityService {
     ListFilmDTO getFilmListByCityName(String cityName);
 
     //POST
-    CinemaDTO createNewCinemaInCity(String cityName, Cinema cinema);
+    CinemaDTO createNewCinemaInCity(String cityName, CinemaDTO cinemaDTO);
 }

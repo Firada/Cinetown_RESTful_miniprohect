@@ -1,9 +1,6 @@
 package com.execinema.restfulapi_cinetown.service;
 
-import com.execinema.restfulapi_cinetown.api.mapper.CinemaMapper;
-import com.execinema.restfulapi_cinetown.api.mapper.CityMapper;
-import com.execinema.restfulapi_cinetown.api.mapper.FilmMapper;
-import com.execinema.restfulapi_cinetown.api.mapper.ScheduleMapper;
+
 import com.execinema.restfulapi_cinetown.api.model.*;
 import com.execinema.restfulapi_cinetown.domain.Cinema;
 import com.execinema.restfulapi_cinetown.domain.City;
@@ -11,10 +8,12 @@ import com.execinema.restfulapi_cinetown.domain.City;
 import com.execinema.restfulapi_cinetown.domain.Schedule;
 import com.execinema.restfulapi_cinetown.repository.CinemaRepository;
 import com.execinema.restfulapi_cinetown.repository.CityRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import java.util.Optional;
 import java.util.Set;
 
 import java.util.stream.Collectors;
@@ -24,22 +23,13 @@ public class CityServiceImpl implements CityService {
 
     private final CityRepository cityRepository;
     private final CinemaRepository cinemaRepository;
-    private final CityMapper cityMapper;
-    private final CinemaMapper cinemaMapper;
-    private final ScheduleMapper scheduleMapper;
-    private final FilmMapper filmMapper;
+    private final ModelMapper modelMapper;
 
-    public CityServiceImpl(CityRepository cityRepository, CinemaRepository cinemaRepository,
-                           CityMapper cityMapper, CinemaMapper cinemaMapper,
-                           ScheduleMapper scheduleMapper, FilmMapper filmMapper) {
+    public CityServiceImpl(CityRepository cityRepository, CinemaRepository cinemaRepository, ModelMapper modelMapper) {
         this.cityRepository = cityRepository;
         this.cinemaRepository = cinemaRepository;
-        this.cityMapper = cityMapper;
-        this.cinemaMapper = cinemaMapper;
-        this.scheduleMapper = scheduleMapper;
-        this.filmMapper = filmMapper;
+        this.modelMapper = modelMapper;
     }
-
 
     //GET
     @Override
@@ -49,8 +39,7 @@ public class CityServiceImpl implements CityService {
                 .getCinemas()
                 .stream()
                 .map(cinema -> {
-                    CinemaDTO cinemaDTO = cinemaMapper.cinemaToCinemaDTO(cinema);
-                    return cinemaDTO;
+                    return modelMapper.map(cinema, CinemaDTO.class);
                 })
                 .collect(Collectors.toList());
 
@@ -67,8 +56,7 @@ public class CityServiceImpl implements CityService {
                 .flatMap(Set::stream)
                 .map(Schedule::getFilm)
                 .map(film -> {
-                    FilmDTO filmDTO = filmMapper.filmToFilmDTO(film);
-                    return filmDTO;
+                    return modelMapper.map(film, FilmDTO.class);
                 })
                 .collect(Collectors.toList());
 
@@ -77,12 +65,20 @@ public class CityServiceImpl implements CityService {
 
     //POST
     @Override
-    public CinemaDTO createNewCinemaInCity(String cityName, Cinema cinema) {
+    public CinemaDTO createNewCinemaInCity(String cityName, CinemaDTO cinemaDTO) {
 
-            Cinema newCinema = cinema;
-            newCinema.getCity().setName(cityName);
-            cinemaRepository.save(newCinema);
-            CinemaDTO cinemaDTO = cinemaMapper.cinemaToCinemaDTO(newCinema);
+        Cinema cinema = modelMapper.map(cinemaDTO, Cinema.class);
+        Optional<City> optionalCity = cityRepository.findById(cityName);
+        City city;
+
+        if (optionalCity.isPresent()) {
+            city = optionalCity.get();
+        } else {
+            city = new City(cityName);
+      /*      city.setCinemas(new HashSet<>());*/
+        }
+        city.getCinemas().add(cinema);
+        cityRepository.save(city);
 
         return cinemaDTO;
     }

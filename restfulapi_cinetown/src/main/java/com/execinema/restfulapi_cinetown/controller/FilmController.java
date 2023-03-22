@@ -22,13 +22,13 @@ public class FilmController {
     }
 
     //DELETE
-    @DeleteMapping("")
+    @DeleteMapping("/film/{filmName}/producer/{producer}")
     @ResponseStatus(HttpStatus.OK)
     void deleteFilmByNameAndProducer(@PathVariable String filmName, @PathVariable String producer){
         filmService.deleteFilmByNameAndProducer(filmName, producer);
     }
 
-    @DeleteMapping("")
+    @DeleteMapping("/film/{filmName}")
     @ResponseStatus(HttpStatus.OK)
     void deleteFilmByName(@PathVariable String filmName){
         filmService.deleteFilmByName(filmName);
