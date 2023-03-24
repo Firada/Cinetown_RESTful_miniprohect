@@ -7,6 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface FilmRepository extends JpaRepository<Film, FilmId> {
 
     //DELETE
-    void deleteFilmByNameAndProducer(String filmName, String producer);
-    void deleteFilmByName(String filmName);
+    void deleteAllByName(String name);
 }

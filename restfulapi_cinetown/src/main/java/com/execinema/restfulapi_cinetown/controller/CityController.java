@@ -18,7 +18,7 @@ public class CityController {
     }
 
     //GET
-    @GetMapping("/city/{CityName}/cinema")
+    @GetMapping("/city/{cityName}/cinema")
     @ResponseStatus(HttpStatus.OK)
     public ListCinemaDTO getCinemaListByCityName(@PathVariable String cityName){
         return cityService.getCinemaListByCityName(cityName);

@@ -22,7 +22,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class CinemaServiceImpl implements CinemaService{
+public class CinemaServiceImpl implements CinemaService {
 
     private final CinemaRepository cinemaRepository;
     private final ModelMapper modelMapper;
@@ -48,11 +48,11 @@ public class CinemaServiceImpl implements CinemaService{
         return new ListFilmDTO(filmDTOList);
     }
 
-    //Da ordinare dal meno distante al piu distante
+ /*   //Da ordinare dal meno distante al piu distante
     @Override
-    public ListCinemaDTO getCinemaListByCityNameFilmNameAndProducer( String cityName,
-                                                                     String filmName,
-                                                                     String producer){
+    public ListCinemaDTO getCinemaListByCityNameFilmNameAndProducer(String cityName,
+                                                                    String filmName,
+                                                                    String producer) {
         List<CinemaDTO> cinemaDTOList = cinemaRepository.findByCityName(cityName)
                 .stream()
                 .map(cinema -> {
@@ -61,12 +61,12 @@ public class CinemaServiceImpl implements CinemaService{
                 .sorted(Comparator.comparing(CinemaDTO::getDistanceFromCityCenter))
                 .collect(Collectors.toList());
 
-/*        cinemaDTOList.stream()
+      *//*  cinemaDTOList.stream()
                 .sorted(Comparator.comparing(CinemaDTO::getDistanceFromCityCenter))
-                .collect(Collectors.toList());*/
+                .collect(Collectors.toList());*//*
 
         return new ListCinemaDTO(cinemaDTOList);
-    }
+    }*/
 
     @Override
     public ListCinemaDTO getCinemaListByCityNameFilmNameProducerAndDistance(String cityName,
@@ -75,10 +75,10 @@ public class CinemaServiceImpl implements CinemaService{
                                                                             Double distance) {
         List<CinemaDTO> cinemaDTOList =
                 cinemaRepository.findByCityNameAndDistanceFromCityCenterIsLessThanEqual(cityName, distance)
-                .stream()
-                .map(cinema -> {
-                    return getCinemaDTO(filmName, producer, cinema);
-                })
+                        .stream()
+                        .map(cinema -> {
+                            return getCinemaDTO(filmName, producer, cinema);
+                        })
                         .sorted(Comparator.comparing(CinemaDTO::getDistanceFromCityCenter))
                         .collect(Collectors.toList());
 
@@ -87,16 +87,17 @@ public class CinemaServiceImpl implements CinemaService{
 
     @Override
     public void deleteCinemaByName(String cinemaName) {
-        if(cinemaRepository.findById(cinemaName).isPresent()){
+        if (cinemaRepository.findById(cinemaName).isPresent()) {
             cinemaRepository.deleteById(cinemaName);
         }
-
     }
 
     private CinemaDTO getCinemaDTO(String filmName, String producer, Cinema cinema) {
         cinema.getSchedules()
                 .stream()
                 .map(schedule -> {
+                    //scheduleRepository.findBy
+                    //filter()
                     schedule.getFilm().setName(filmName);
                     schedule.getFilm().setProducer(producer);
                     return schedule;

@@ -9,6 +9,8 @@ import com.execinema.restfulapi_cinetown.domain.Schedule;
 import com.execinema.restfulapi_cinetown.repository.CinemaRepository;
 import com.execinema.restfulapi_cinetown.repository.CityRepository;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +26,8 @@ public class CityServiceImpl implements CityService {
     private final CityRepository cityRepository;
     private final CinemaRepository cinemaRepository;
     private final ModelMapper modelMapper;
+
+    Logger logger = LoggerFactory.getLogger(CityServiceImpl.class);
 
     public CityServiceImpl(CityRepository cityRepository, CinemaRepository cinemaRepository, ModelMapper modelMapper) {
         this.cityRepository = cityRepository;
@@ -66,7 +70,7 @@ public class CityServiceImpl implements CityService {
     //POST
     @Override
     public CinemaDTO createNewCinemaInCity(String cityName, CinemaDTO cinemaDTO) {
-
+   /*     logger.info("Questa e' la mia citta':" + cityName);*/
         Cinema cinema = modelMapper.map(cinemaDTO, Cinema.class);
         Optional<City> optionalCity = cityRepository.findById(cityName);
         City city;
@@ -74,12 +78,16 @@ public class CityServiceImpl implements CityService {
         if (optionalCity.isPresent()) {
             city = optionalCity.get();
         } else {
-            city = new City(cityName);
-      /*      city.setCinemas(new HashSet<>());*/
+            city = new City();
+            city.setName(cityName);
         }
-        city.getCinemas().add(cinema);
-        cityRepository.save(city);
 
+        //SAve from ManyToOne si puo' evitare doppio set
+        cinema.setCity(city);
+       /* city.getCinemas().add(cinema);*/
+
+        cinemaRepository.save(cinema);
+  /*      cityRepository.save(city);*/
         return cinemaDTO;
     }
 }

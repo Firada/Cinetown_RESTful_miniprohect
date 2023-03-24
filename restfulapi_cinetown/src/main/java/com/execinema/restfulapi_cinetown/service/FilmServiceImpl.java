@@ -9,6 +9,8 @@ import com.execinema.restfulapi_cinetown.repository.FilmRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class FilmServiceImpl implements FilmService{
 
@@ -22,21 +24,23 @@ public class FilmServiceImpl implements FilmService{
 
     //POST
     @Override
-    public FilmDTO createNewFilm(Film film) {
-        Film newFilm = filmRepository.save(film);
-        FilmDTO filmDTO = modelMapper.map(newFilm, FilmDTO.class);
+    public FilmDTO createNewFilm(FilmDTO filmDTO) {
+        Film newFilm = modelMapper.map(filmDTO, Film.class);
+        filmRepository.save(newFilm);
         return filmDTO;
     }
 
     @Override
     public void deleteFilmByNameAndProducer(String filmName, String producer) {
-        filmRepository.deleteFilmByNameAndProducer(filmName, producer);
-
+        FilmId filmId = new FilmId(filmName, producer);
+        filmRepository.deleteById(filmId);
     }
 
+
     @Override
+    @Transactional
     public void deleteFilmByName(String filmName) {
-        filmRepository.deleteFilmByName(filmName);
+        filmRepository.deleteAllByName(filmName);
     }
 
 

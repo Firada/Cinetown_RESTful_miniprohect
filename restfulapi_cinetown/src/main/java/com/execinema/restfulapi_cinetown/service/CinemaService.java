@@ -11,7 +11,7 @@ public interface CinemaService {
 
    //GET
    ListFilmDTO getFilmListByCinemaName(String cinemaName);
-   ListCinemaDTO getCinemaListByCityNameFilmNameAndProducer(String cityName, String filmName, String producer);
+/*   ListCinemaDTO getCinemaListByCityNameFilmNameAndProducer(String cityName, String filmName, String producer);*/
    ListCinemaDTO getCinemaListByCityNameFilmNameProducerAndDistance(String cityName, String filmName, String producer, Double distance);
 
    //DELETE

@@ -35,6 +35,12 @@ public class Cinema {
         this.name = name;
     }
 
+    public Cinema(String name, String address, Double distanceFromCityCenter) {
+        this.name = name;
+        this.address = address;
+        this.distanceFromCityCenter = distanceFromCityCenter;
+    }
+
     public Cinema(String name, String address, Double distanceFromCityCenter, City city, Set<Schedule> schedules) {
         this.name = name;
         this.address = address;

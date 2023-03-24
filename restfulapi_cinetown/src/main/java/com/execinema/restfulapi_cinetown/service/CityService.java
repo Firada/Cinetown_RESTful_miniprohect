@@ -10,7 +10,6 @@ import java.util.List;
 
 public interface CityService {
 
-
     //GET
     ListCinemaDTO getCinemaListByCityName(String cityName);
     ListFilmDTO getFilmListByCityName(String cityName);

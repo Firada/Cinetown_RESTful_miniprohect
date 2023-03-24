@@ -22,13 +22,13 @@ public class CinemaController {
         return cinemaService.getFilmListByCinemaName(cinemaName);
     }
 
-    @GetMapping("/cinema/all/city/{cityName}/film/{film}/producer/{producer}")
+  /*  @GetMapping("/cinema/all/city/{cityName}/film/{film}/producer/{producer}")
     @ResponseStatus(HttpStatus.OK)
     public ListCinemaDTO getCinemaListByCityNameFilmNameAndProducer(@PathVariable String cityName,
                                                                     @PathVariable String film,
                                                                     @PathVariable String producer){
         return cinemaService.getCinemaListByCityNameFilmNameAndProducer(cityName, film, producer);
-    }
+    }*/
 
     @GetMapping("/cinema/all/city/{cityName}/film/{filmName}/producer/{producer}")
     @ResponseStatus(HttpStatus.OK)

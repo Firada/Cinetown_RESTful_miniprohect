@@ -1,11 +1,11 @@
 package com.execinema.restfulapi_cinetown.controller;
 
+import com.execinema.restfulapi_cinetown.api.model.ScheduleDTO;
+import com.execinema.restfulapi_cinetown.api.model.SchedulePutDTO;
 import com.execinema.restfulapi_cinetown.domain.Schedule;
 import com.execinema.restfulapi_cinetown.service.ScheduleService;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ScheduleController {
@@ -19,7 +19,7 @@ public class ScheduleController {
     //PUT
     @PutMapping("/schedule")
     @ResponseStatus(HttpStatus.OK)
-    public void updateSchedule(Long id, Schedule schedule){
-        scheduleService.updateSchedule(id, schedule);
+    public SchedulePutDTO updateSchedule(@RequestBody SchedulePutDTO schedulePutDTO){
+        return scheduleService.updateSchedule(schedulePutDTO);
     }
 }

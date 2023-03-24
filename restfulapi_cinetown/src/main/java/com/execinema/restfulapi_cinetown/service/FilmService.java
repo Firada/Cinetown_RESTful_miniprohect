@@ -10,7 +10,7 @@ import java.util.List;
 public interface FilmService {
 
     //POST
-    FilmDTO createNewFilm(Film film);
+    FilmDTO createNewFilm(FilmDTO filmDTO);
 
     //Delete
     void deleteFilmByNameAndProducer(String filmName, String producer);

@@ -1,5 +1,6 @@
 package com.execinema.restfulapi_cinetown.controller;
 
+import com.execinema.restfulapi_cinetown.api.model.FilmDTO;
 import com.execinema.restfulapi_cinetown.domain.Film;
 import com.execinema.restfulapi_cinetown.service.FilmService;
 import org.springframework.http.HttpStatus;
@@ -17,8 +18,8 @@ public class FilmController {
     //POST
     @PostMapping("/film")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createNewFilm(@RequestBody Film film){
-        filmService.createNewFilm(film);
+    public FilmDTO createNewFilm(@RequestBody FilmDTO filmDTO){
+        return filmService.createNewFilm(filmDTO);
     }
 
     //DELETE

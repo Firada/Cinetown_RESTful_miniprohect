@@ -28,6 +28,11 @@ public class Film {
     public Film() {
     }
 
+    public Film(String name, String producer) {
+        this.name = name;
+        this.producer = producer;
+    }
+
     public Film(String name, String producer, String description, Set<Schedule> schedules) {
         this.name = name;
         this.producer = producer;
