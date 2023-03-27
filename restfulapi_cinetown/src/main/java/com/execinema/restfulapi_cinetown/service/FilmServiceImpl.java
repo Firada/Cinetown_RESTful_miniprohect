@@ -3,7 +3,6 @@ package com.execinema.restfulapi_cinetown.service;
 
 import com.execinema.restfulapi_cinetown.api.model.FilmDTO;
 import com.execinema.restfulapi_cinetown.domain.Film;
-
 import com.execinema.restfulapi_cinetown.domain.FilmId;
 import com.execinema.restfulapi_cinetown.repository.FilmRepository;
 import org.modelmapper.ModelMapper;
@@ -25,6 +24,7 @@ public class FilmServiceImpl implements FilmService{
     //POST
     @Override
     public FilmDTO createNewFilm(FilmDTO filmDTO) {
+
         Film newFilm = modelMapper.map(filmDTO, Film.class);
         filmRepository.save(newFilm);
         return filmDTO;

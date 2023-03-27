@@ -34,17 +34,18 @@ public class CinemaController {
         return cinemaService.getCinemaListByCityNameFilmNameAndProducer(cityName, film, producer);
     }*/
 
+    @ApiOperation(value = "Returns a list of cinemas searched by city, distance, film and producer", notes = "About the API...")
     @GetMapping("/cinema/all/city/{cityName}/film/{filmName}/producer/{producer}")
     @ResponseStatus(HttpStatus.OK)
     public ListCinemaDTO getCinemaListByCityNameFilmNameProducerAndDistance(@PathVariable String cityName,
                                                                             @PathVariable String filmName,
                                                                             @PathVariable String producer,
-                                                                            @RequestParam(required = false) Double distance){
-        return cinemaService.getCinemaListByCityNameFilmNameProducerAndDistance(cityName, filmName, producer, distance );
+                                                                            @RequestParam(required = false) Double distance) {
+            return cinemaService.getCinemaListByCityNameFilmNameProducerAndDistance(cityName, filmName, producer, distance);
     }
 
-
     //DELETE
+    @ApiOperation(value = "Deletes a cinema from the DB by name. No Return", notes = "About the API...")
     @DeleteMapping("/cinema/{cinemaName}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteCinemaByName(@PathVariable String cinemaName){
