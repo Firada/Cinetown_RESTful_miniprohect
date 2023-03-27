@@ -93,14 +93,11 @@ public class CinemaServiceImpl implements CinemaService {
     }
 
     private CinemaDTO getCinemaDTO(String filmName, String producer, Cinema cinema) {
-        cinema.getSchedules()
+        List<Schedule> scheduleList = cinema.getSchedules()
                 .stream()
-                .map(schedule -> {
-                    //scheduleRepository.findBy
-                    //filter()
-                    schedule.getFilm().setName(filmName);
-                    schedule.getFilm().setProducer(producer);
-                    return schedule;
+                .filter(schedule -> {
+                    return schedule.getFilm().getName().equals(filmName)
+                            && schedule.getFilm().getProducer().equals(producer);
                 })
                 .collect(Collectors.toList());
         return modelMapper.map(cinema, CinemaDTO.class);

@@ -21,6 +21,7 @@
         <java.version>1.8</java.version>
         <org.mapstruct.version>1.2.0.Final</org.mapstruct.version>
         <m2e.apt.activation>jdt_apt</m2e.apt.activation>
+        <springfox-swagger-ui.version>2.7.0</springfox-swagger-ui.version>
     </properties>
     <dependencies>
         <dependency>
@@ -73,6 +74,16 @@
             <artifactId>junit-jupiter</artifactId>
             <version>RELEASE</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox-swagger-ui.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${springfox-swagger-ui.version}</version>
         </dependency>
     </dependencies>
     <build>
