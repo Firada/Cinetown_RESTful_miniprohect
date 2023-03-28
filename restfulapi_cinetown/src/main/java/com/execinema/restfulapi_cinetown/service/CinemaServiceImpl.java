@@ -44,23 +44,23 @@ public class CinemaServiceImpl implements CinemaService {
                 .collect(Collectors.toList());
         return new ListFilmDTO(filmDTOList);
     }
-
- /*   //Da ordinare dal meno distante al piu distante
-    @Override
-    public ListCinemaDTO getCinemaListByCityNameFilmNameAndProducer(String cityName,
-                                                                    String filmName,
-                                                                    String producer) {
-        List<CinemaDTO> cinemaDTOList = cinemaRepository.findByCityName(cityName)
+    
+    //testing my stuff
+  /*  public ListCinemaDTO getCinemaAAAAAAAAAAListByCityNameFilmNameProducerAndDistance(String cityName,
+                                                                            String filmName,
+                                                                            String producer,
+                                                                            Double distance) {
+    
+     *//*   List<CinemaDTO> cinemaDTOList = cinemaRepository.findByCityNameAndDistanceFromCityCenterIsLessThanEqual(cityName, distance)
                 .stream()
-                .map(cinema -> {
-                    return getCinemaDTO(filmName, producer, cinema);
+                .map(Cinema::getSchedules)
+                .flatMap(Set::stream)
+                .map(Schedule::getFilm)
+                .anyMatch(film -> {
+                    film.getName().equals(filmName) && film.getProducer().equals(producer);
                 })
-                .sorted(Comparator.comparing(CinemaDTO::getDistanceFromCityCenter))
-                .collect(Collectors.toList());
-
-      *//*  cinemaDTOList.stream()
-                .sorted(Comparator.comparing(CinemaDTO::getDistanceFromCityCenter))
-                .collect(Collectors.toList());*//*
+                .collect(Collectors.toSet());
+*//*
 
         return new ListCinemaDTO(cinemaDTOList);
     }*/
@@ -77,7 +77,7 @@ public class CinemaServiceImpl implements CinemaService {
             distance = Double.MAX_VALUE;
         }
 
-        if(distance == 0){
+        if (distance == 0) {
             throw new WrongParamFormatException("Value must be higher than 0");
         }
         cinemaRepository.findByCityNameAndDistanceFromCityCenterIsLessThanEqual(cityName, distance)
@@ -124,6 +124,9 @@ public class CinemaServiceImpl implements CinemaService {
         cinema.setSchedules(scheduleSet);
         return modelMapper.map(cinema, CinemaDTO.class);
     }
+
+
+
 
 
 }

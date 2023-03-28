@@ -18,12 +18,12 @@ public class RESTExceptionHandler extends ResponseEntityExceptionHandler {
 
         //Se volessi usare un messaggio personale effettivamente scritto da me per quella data eccezione, chiamare all'interno
         // del metodo exceptionParamether.getMessage();
-        return new ResponseEntity<Object>("Resource not found", new HttpHeaders(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<Object>(exception.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({WrongParamFormatException.class})
     public ResponseEntity<Object> handleWrongParamFormatException(WrongParamFormatException exception, WebRequest request){
-        return new ResponseEntity<Object>( "We got a bad request here", new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<Object>( exception.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 }
 

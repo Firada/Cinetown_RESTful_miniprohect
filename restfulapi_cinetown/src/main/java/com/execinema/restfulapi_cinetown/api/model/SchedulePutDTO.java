@@ -5,6 +5,7 @@ public class SchedulePutDTO {
     private String cinema_name;
     private String film_name;
     private String film_producer;
+    private String message;
 
     public SchedulePutDTO() {
     }
@@ -39,12 +40,22 @@ public class SchedulePutDTO {
         this.film_producer = film_producer;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     @Override
     public String toString() {
         return "SchedulePutDTO{" +
                 "cinema_name='" + cinema_name + '\'' +
                 ", film_name='" + film_name + '\'' +
                 ", film_producer='" + film_producer + '\'' +
+                ", message='" + message + '\'' +
                 '}';
     }
+
 }
