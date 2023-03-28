@@ -13,7 +13,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,24 +45,30 @@ public class CinemaServiceImpl implements CinemaService {
     }
     
     //testing my stuff
-  /*  public ListCinemaDTO getCinemaAAAAAAAAAAListByCityNameFilmNameProducerAndDistance(String cityName,
+    public ListCinemaDTO getCinemaAAAAAAAAAAListByCityNameFilmNameProducerAndDistance(String cityName,
                                                                             String filmName,
                                                                             String producer,
                                                                             Double distance) {
     
-     *//*   List<CinemaDTO> cinemaDTOList = cinemaRepository.findByCityNameAndDistanceFromCityCenterIsLessThanEqual(cityName, distance)
+        List<CinemaDTO> cinemaDTOList = cinemaRepository.findByCityNameAndDistanceFromCityCenterIsLessThanEqual(cityName, distance)
                 .stream()
-                .map(Cinema::getSchedules)
-                .flatMap(Set::stream)
-                .map(Schedule::getFilm)
-                .anyMatch(film -> {
-                    film.getName().equals(filmName) && film.getProducer().equals(producer);
+                .filter(cinema -> {
+                    return cinema.getSchedules()
+                            .stream()
+                            .anyMatch(schedule -> {
+                                return schedule.getFilm().getName().equals(filmName)
+                                        && schedule.getFilm().getProducer().equals(producer);
+                            });
                 })
-                .collect(Collectors.toSet());
-*//*
+                .map(cinema -> {
+                    return modelMapper.map(cinema, CinemaDTO.class);
+                })
+                .sorted(Comparator.comparing(CinemaDTO::getDistanceFromCityCenter))
+                .collect(Collectors.toList());
+
 
         return new ListCinemaDTO(cinemaDTOList);
-    }*/
+    }
 
     @Override
     public ListCinemaDTO getCinemaListByCityNameFilmNameProducerAndDistance(String cityName,
@@ -71,7 +76,7 @@ public class CinemaServiceImpl implements CinemaService {
                                                                             String producer,
                                                                             Double distance) {
 
-        Set<Cinema> cinemaSet = new HashSet<>();
+        /*Set<Cinema> cinemaSet = new HashSet<>();*/
 
         if (distance == null) {
             distance = Double.MAX_VALUE;
@@ -80,9 +85,27 @@ public class CinemaServiceImpl implements CinemaService {
         if (distance == 0) {
             throw new WrongParamFormatException("Value must be higher than 0");
         }
-        cinemaRepository.findByCityNameAndDistanceFromCityCenterIsLessThanEqual(cityName, distance)
-                .forEach(cinema -> {
-                    /*return getCinemaDTO(filmName, producer, cinema);*/
+        List<CinemaDTO> cinemaDTOList = cinemaRepository.findByCityNameAndDistanceFromCityCenterIsLessThanEqual(cityName, distance)
+                .stream()
+                .filter(cinema -> {
+                    return cinema.getSchedules()
+                            .stream()
+                            .anyMatch(schedule -> {
+                                return schedule.getFilm().getName().equals(filmName)
+                                        && schedule.getFilm().getProducer().equals(producer);
+                            });
+                })
+                .map(cinema -> {
+                    return modelMapper.map(cinema, CinemaDTO.class);
+                })
+                .sorted(Comparator.comparing(CinemaDTO::getDistanceFromCityCenter))
+                .collect(Collectors.toList());
+
+
+        return new ListCinemaDTO(cinemaDTOList);
+
+                /*.forEach(cinema -> {
+                    *//*return getCinemaDTO(filmName, producer, cinema);*//*
                     cinema.getSchedules()
                             .forEach(schedule -> {
                                 if (schedule.getFilm().getName().equals(filmName)
@@ -100,7 +123,8 @@ public class CinemaServiceImpl implements CinemaService {
                 .collect(Collectors.toList());
 
 
-        return new ListCinemaDTO(cinemaDTOS);
+        return new ListCinemaDTO(cinemaDTOS);*/
+
     }
 
     @Override

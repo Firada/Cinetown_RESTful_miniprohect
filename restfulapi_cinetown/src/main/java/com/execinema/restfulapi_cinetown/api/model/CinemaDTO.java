@@ -2,6 +2,8 @@ package com.execinema.restfulapi_cinetown.api.model;
 
 
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -10,8 +12,13 @@ public class CinemaDTO implements Serializable {
 
     private static final long serialVersionUID = 4267568269455581829L;
 
+    @ApiModelProperty(value = "Primary key", required = true)
     private String name;
+
+    @ApiModelProperty(value = "Cinema address")
     private String address;
+
+    @ApiModelProperty(value = "Cinema distance from city center")
     private Double distanceFromCityCenter;
 
     public CinemaDTO() {

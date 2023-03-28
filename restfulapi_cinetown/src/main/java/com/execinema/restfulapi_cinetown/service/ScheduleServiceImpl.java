@@ -14,7 +14,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
@@ -53,17 +52,25 @@ public class ScheduleServiceImpl implements ScheduleService {
             throw new ResourceNotFoundException("Film name and/or film producer not found");
         }
 
-        Set<Schedule> schedules = scheduleRepository.findByCinemaAndFilm(optCinema.get(), optFilm.get());
-
+        Optional<Schedule> schedules = scheduleRepository.findByCinemaAndFilm(optCinema.get(), optFilm.get());
+        Schedule schedule;
         if (schedules.isEmpty()) {
-            Schedule schedule = new Schedule();
+            schedule = new Schedule();
             schedule.setCinema(optCinema.get());
             schedule.setFilm(optFilm.get());
-            scheduleRepository.save(schedule);
+            schedulePutDTO.setMessage("New schedule created");
+
+        } else {
+            schedule = schedules.get();
+            schedulePutDTO.setMessage("Updated schedule");
         }
-        schedulePutDTO.setMessage("Sono un message nello schedule DTO");
+        scheduleRepository.save(schedule);
+
+        //Come mai non uso la mappatura?????
+
         return schedulePutDTO;
     }
+
 
     @Override
     public String updateScheduleWithMessage(SchedulePutDTO schedulePutDTO) {
@@ -84,14 +91,13 @@ public class ScheduleServiceImpl implements ScheduleService {
             throw new ResourceNotFoundException("Film name and/or film producer not found");
         }
 
-        Set<Schedule> schedules = scheduleRepository.findByCinemaAndFilm(optCinema.get(), optFilm.get());
+        Optional<Schedule> schedules = scheduleRepository.findByCinemaAndFilm(optCinema.get(), optFilm.get());
 
         if (schedules.isEmpty()) {
             Schedule schedule = new Schedule();
             schedule.setCinema(optCinema.get());
             schedule.setFilm(optFilm.get());
             scheduleRepository.save(schedule);
-
         }
 
         return "Sono un mex custom by String";

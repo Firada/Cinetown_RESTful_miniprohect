@@ -1,10 +1,19 @@
 package com.execinema.restfulapi_cinetown.api.model;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class SchedulePutDTO {
 
+    @ApiModelProperty(value = "Primary key of a Cinema", required = true)
     private String cinema_name;
+
+    @ApiModelProperty(value = "Composite primary key of a Film", required = true)
     private String film_name;
+
+    @ApiModelProperty(value = "Composite primary key of a Film", required = true)
     private String film_producer;
+
+
     private String message;
 
     public SchedulePutDTO() {
