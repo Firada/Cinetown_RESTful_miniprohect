@@ -25,5 +25,10 @@ public class RESTExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleWrongParamFormatException(WrongParamFormatException exception, WebRequest request){
         return new ResponseEntity<Object>( exception.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
+
+
+   /* public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, WebRequest request) {
+        return new ResponseEntity<Object>( ex ,new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }*/
 }
 

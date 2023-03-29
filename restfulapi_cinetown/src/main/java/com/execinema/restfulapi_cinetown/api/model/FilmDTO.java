@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Data
@@ -13,9 +15,12 @@ public class FilmDTO implements Serializable {
     private static final long serialVersionUID = -6504237329788313894L;
 
     @ApiModelProperty(value = "Composite primary key with 'producer'", required = true)
+    @NotNull
+    @NotBlank
     private String name;
 
     @ApiModelProperty(value = "Composite primary key with 'name'", required = true)
+    @NotNull
     private String producer;
 
     @ApiModelProperty(value = "The film description")

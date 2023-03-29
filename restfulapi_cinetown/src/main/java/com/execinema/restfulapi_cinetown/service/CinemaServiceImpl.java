@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,23 +44,23 @@ public class CinemaServiceImpl implements CinemaService {
                 .collect(Collectors.toList());
         return new ListFilmDTO(filmDTOList);
     }
-    
-    //testing my stuff
-    public ListCinemaDTO getCinemaAAAAAAAAAAListByCityNameFilmNameProducerAndDistance(String cityName,
+
+    @Override
+    public ListCinemaDTO getCinemaListByCityNameFilmNameProducerAndDistance(String cityName,
                                                                             String filmName,
                                                                             String producer,
                                                                             Double distance) {
-    
+        if (distance == null) {
+            distance = Double.MAX_VALUE;
+        }
+
+        if (distance == 0) {
+            throw new WrongParamFormatException("Value must be higher than 0");
+        }
+
         List<CinemaDTO> cinemaDTOList = cinemaRepository.findByCityNameAndDistanceFromCityCenterIsLessThanEqual(cityName, distance)
                 .stream()
-                .filter(cinema -> {
-                    return cinema.getSchedules()
-                            .stream()
-                            .anyMatch(schedule -> {
-                                return schedule.getFilm().getName().equals(filmName)
-                                        && schedule.getFilm().getProducer().equals(producer);
-                            });
-                })
+                .filter(doesCinemaHaveFilmAndProducer(filmName, producer))
                 .map(cinema -> {
                     return modelMapper.map(cinema, CinemaDTO.class);
                 })
@@ -70,61 +71,15 @@ public class CinemaServiceImpl implements CinemaService {
         return new ListCinemaDTO(cinemaDTOList);
     }
 
-    @Override
-    public ListCinemaDTO getCinemaListByCityNameFilmNameProducerAndDistance(String cityName,
-                                                                            String filmName,
-                                                                            String producer,
-                                                                            Double distance) {
-
-        /*Set<Cinema> cinemaSet = new HashSet<>();*/
-
-        if (distance == null) {
-            distance = Double.MAX_VALUE;
-        }
-
-        if (distance == 0) {
-            throw new WrongParamFormatException("Value must be higher than 0");
-        }
-        List<CinemaDTO> cinemaDTOList = cinemaRepository.findByCityNameAndDistanceFromCityCenterIsLessThanEqual(cityName, distance)
-                .stream()
-                .filter(cinema -> {
-                    return cinema.getSchedules()
-                            .stream()
-                            .anyMatch(schedule -> {
-                                return schedule.getFilm().getName().equals(filmName)
-                                        && schedule.getFilm().getProducer().equals(producer);
-                            });
-                })
-                .map(cinema -> {
-                    return modelMapper.map(cinema, CinemaDTO.class);
-                })
-                .sorted(Comparator.comparing(CinemaDTO::getDistanceFromCityCenter))
-                .collect(Collectors.toList());
-
-
-        return new ListCinemaDTO(cinemaDTOList);
-
-                /*.forEach(cinema -> {
-                    *//*return getCinemaDTO(filmName, producer, cinema);*//*
-                    cinema.getSchedules()
-                            .forEach(schedule -> {
-                                if (schedule.getFilm().getName().equals(filmName)
-                                        && schedule.getFilm().getProducer().equals(producer)) {
-                                    cinemaSet.add(cinema);
-                                }
-                            });
-                });
-
-        List<CinemaDTO> cinemaDTOS = cinemaSet.stream()
-                .map(cinema -> {
-                    return modelMapper.map(cinema, CinemaDTO.class);
-                })
-                .sorted(Comparator.comparing(CinemaDTO::getDistanceFromCityCenter))
-                .collect(Collectors.toList());
-
-
-        return new ListCinemaDTO(cinemaDTOS);*/
-
+    private static Predicate<Cinema> doesCinemaHaveFilmAndProducer(String filmName, String producer) {
+        return cinema -> {
+            return cinema.getSchedules()
+                    .stream()
+                    .anyMatch(schedule -> {
+                        return schedule.getFilm().getName().equals(filmName)
+                                && schedule.getFilm().getProducer().equals(producer);
+                    });
+        };
     }
 
     @Override
@@ -135,22 +90,6 @@ public class CinemaServiceImpl implements CinemaService {
             throw new ResourceNotFoundException("This cinema name: " + cinemaName + " doesn't exists");
         }
     }
-
-    private CinemaDTO getCinemaDTO(String filmName, String producer, Cinema cinema) {
-        Set<Schedule> scheduleSet = cinema.getSchedules()
-                .stream()
-                .filter(schedule -> {
-                    return schedule.getFilm().getName().equals(filmName)
-                            && schedule.getFilm().getProducer().equals(producer);
-
-                })
-                .collect(Collectors.toSet());
-        cinema.setSchedules(scheduleSet);
-        return modelMapper.map(cinema, CinemaDTO.class);
-    }
-
-
-
 
 
 }

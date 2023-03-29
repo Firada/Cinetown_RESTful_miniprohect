@@ -1,10 +1,11 @@
 package com.execinema.restfulapi_cinetown.controller;
 
 import com.execinema.restfulapi_cinetown.api.model.FilmDTO;
-import com.execinema.restfulapi_cinetown.domain.Film;
 import com.execinema.restfulapi_cinetown.service.FilmService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 public class FilmController {
@@ -18,13 +19,14 @@ public class FilmController {
     //POST
     @PostMapping("/film")
     @ResponseStatus(HttpStatus.CREATED)
-    public FilmDTO createNewFilm(@RequestBody FilmDTO filmDTO){
+    public FilmDTO createNewFilm(@RequestBody @Valid FilmDTO filmDTO){
         return filmService.createNewFilm(filmDTO);
     }
 
     //DELETE
     @DeleteMapping("/film/{filmName}/producer/{producer}")
     @ResponseStatus(HttpStatus.OK)
+
     void deleteFilmByNameAndProducer(@PathVariable String filmName, @PathVariable String producer){
         filmService.deleteFilmByNameAndProducer(filmName, producer);
     }
