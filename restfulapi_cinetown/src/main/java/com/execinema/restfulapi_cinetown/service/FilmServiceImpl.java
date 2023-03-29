@@ -38,7 +38,7 @@ public class FilmServiceImpl implements FilmService{
 
         Optional<Film> film = filmRepository.findById(filmId);
         if(film.isEmpty()){
-            throw new ResourceNotFoundException("Non esiste il fil nel db");
+            throw new ResourceNotFoundException("Film doesn't exist in db");
         }
         filmRepository.deleteById(filmId);
     }
