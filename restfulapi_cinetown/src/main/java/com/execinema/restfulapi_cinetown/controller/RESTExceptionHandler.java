@@ -5,6 +5,7 @@ import com.execinema.restfulapi_cinetown.exception.WrongParamFormatException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -26,9 +27,10 @@ public class RESTExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<Object>( exception.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
-
-   /* public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, WebRequest request) {
-        return new ResponseEntity<Object>( ex ,new HttpHeaders(), HttpStatus.BAD_REQUEST);
-    }*/
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                  HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return new ResponseEntity<Object>( ex.getMessage(),headers, status);
+    }
 }
 
