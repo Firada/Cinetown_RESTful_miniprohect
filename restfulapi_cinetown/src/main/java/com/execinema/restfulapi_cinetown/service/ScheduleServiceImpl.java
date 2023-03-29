@@ -36,11 +36,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public SchedulePutDTO updateSchedule(SchedulePutDTO schedulePutDTO) {
 
-        /*  log.info(schedulePutDTO.toString());*/
         Optional<Cinema> optCinema = cinemaRepository.findById(schedulePutDTO.getCinema_name());
 
         if (optCinema.isEmpty()) {
-            /*  log.error("Cinema non trovato");*/
             throw new ResourceNotFoundException("Cinema name field: " + schedulePutDTO.getCinema_name() + " doesn't exists");
         }
 
@@ -48,22 +46,22 @@ public class ScheduleServiceImpl implements ScheduleService {
                 (schedulePutDTO.getFilm_name(), schedulePutDTO.getFilm_producer()));
 
         if (optFilm.isEmpty()) {
-            /* log.error("Film non trovato");*/
             throw new ResourceNotFoundException("Film name and/or film producer not found");
         }
 
         /*   Optional<Schedule> schedules =*/
         scheduleRepository.findByCinemaAndFilm(optCinema.get(), optFilm.get())
                 .ifPresentOrElse(schedule -> {
-                    scheduleRepository.save(modelMapper.map(schedulePutDTO, Schedule.class));
-                    schedulePutDTO.setMessage("Updated schedule");
-                }, () -> {
-                    Schedule schedule = new Schedule();
-                    schedule.setCinema(optCinema.get());
-                    schedule.setFilm(optFilm.get());
-                    schedulePutDTO.setMessage("New schedule created");
-                    scheduleRepository.save(schedule);
-                });
+                            scheduleRepository.save(modelMapper.map(schedulePutDTO, Schedule.class));
+                            schedulePutDTO.setMessage("Updated schedule");
+                        },
+                        () -> {
+                            Schedule schedule = new Schedule();
+                            schedule.setCinema(optCinema.get());
+                            schedule.setFilm(optFilm.get());
+                            schedulePutDTO.setMessage("New schedule created");
+                            scheduleRepository.save(schedule);
+                        });
         return schedulePutDTO;
     }
 
