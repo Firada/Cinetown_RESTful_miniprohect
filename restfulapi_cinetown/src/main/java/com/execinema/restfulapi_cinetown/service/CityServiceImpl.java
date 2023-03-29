@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -70,24 +69,18 @@ public class CityServiceImpl implements CityService {
     //POST
     @Override
     public CinemaDTO createNewCinemaInCity(String cityName, CinemaDTO cinemaDTO) {
-   /*     logger.info("Questa e' la mia citta':" + cityName);*/
         Cinema cinema = modelMapper.map(cinemaDTO, Cinema.class);
-        Optional<City> optionalCity = cityRepository.findById(cityName);
-        City city;
 
-        if (optionalCity.isPresent()) {
-            city = optionalCity.get();
-        } else {
-            city = new City();
-            city.setName(cityName);
-        }
-
-        //SAve from ManyToOne si puo' evitare doppio set
-        cinema.setCity(city);
-       /* city.getCinemas().add(cinema);*/
+        cityRepository.findById(cityName)
+                .ifPresentOrElse( // city -> {cinema.setCity(city)};
+                        cinema::setCity, () -> {
+                            City city = new City(cityName);
+                            cinema.setCity(city);
+                        });
 
         cinemaRepository.save(cinema);
-  /*      cityRepository.save(city);*/
+
         return cinemaDTO;
     }
+
 }
