@@ -67,7 +67,7 @@ public class CinemaServiceImpl implements CinemaService {
                 .sorted(Comparator.comparing(CinemaDTO::getDistanceFromCityCenter))
                 .collect(Collectors.toList());
 
-        if(cinemaDTOList.isEmpty()){
+        if (cinemaDTOList.isEmpty()) {
             throw new ResourceNotFoundException("There are no cinemas at that distance. \n " +
                     "Try with a distance higher than " + distance);
         }
