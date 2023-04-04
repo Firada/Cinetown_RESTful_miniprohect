@@ -15,12 +15,12 @@ public class FilmDTO implements Serializable {
     private static final long serialVersionUID = -6504237329788313894L;
 
     @ApiModelProperty(value = "Composite primary key with 'producer'", required = true)
-    @NotNull
-    @NotBlank
+ /*   @NotNull(message = "name cannot be null")*/
+    @NotBlank(message = "name can't be blank")
     private String name;
 
     @ApiModelProperty(value = "Composite primary key with 'name'", required = true)
-    @NotNull
+    @NotNull(message = "producer can not be null")
     private String producer;
 
     @ApiModelProperty(value = "The film description")

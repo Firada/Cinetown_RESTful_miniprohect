@@ -19,7 +19,7 @@ public class FilmController {
     //POST
     @PostMapping("/film")
     @ResponseStatus(HttpStatus.CREATED)
-    public FilmDTO createNewFilm(@RequestBody @Valid FilmDTO filmDTO){
+    public FilmDTO createNewFilm(@Valid @RequestBody FilmDTO filmDTO){
         return filmService.createNewFilm(filmDTO);
     }
 
